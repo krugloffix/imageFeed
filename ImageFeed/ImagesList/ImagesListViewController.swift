@@ -11,7 +11,7 @@ class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,32 +28,16 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-            
-            guard let imageListCell = cell as? ImagesListCell else {
-                return UITableViewCell()
-            }
-            
-            configCell(for: imageListCell, with: indexPath)
-            return imageListCell
-        }
-    
-    
-}
-
-extension ImagesListViewController {
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
+        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
+        
+        guard let imageListCell = cell as? ImagesListCell else {
+            return UITableViewCell()
         }
         
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
-        
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "Favorites Active") : UIImage(named: "Favorites Inactive")
-        cell.likeButton.setImage(likeImage, for: .normal)
+        configCell(for: imageListCell, with: indexPath)
+        return imageListCell
     }
+    
 }
 
 extension ImagesListViewController: UITableViewDelegate {
@@ -72,4 +56,17 @@ extension ImagesListViewController: UITableViewDelegate {
         return cellHeight
     }
     
+}
+
+extension ImagesListViewController {
+    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return
+        }
+        
+        let isLiked = indexPath.row % 2 == 0
+        
+        cell.setupUI(image: image, date: dateFormatter.string(from: Date()), isLiked: isLiked)
+        
+    }
 }
