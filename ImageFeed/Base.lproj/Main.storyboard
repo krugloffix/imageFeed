@@ -107,7 +107,7 @@
                     <navigationItem key="navigationItem" id="hea-2b-5tg"/>
                     <connections>
                         <outlet property="tableView" destination="WTy-Je-iJN" id="Ytl-7m-wra"/>
-                        <segue destination="ZeN-Li-eFk" kind="show" identifier="ShowSingleImage" id="VSC-kl-vMM"/>
+                        <segue destination="ZeN-Li-eFk" kind="presentation" identifier="ShowSingleImage" id="VSC-kl-vMM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -189,22 +189,32 @@
         <!--Single Image-->
         <scene sceneID="81E-0r-aJm">
             <objects>
-                <viewController title="Single Image" id="ZeN-Li-eFk" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Single Image" modalPresentationStyle="fullScreen" id="ZeN-Li-eFk" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Bve-UP-ObT">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="735"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Yhp-VD-xh1">
-                                <rect key="frame" x="0.0" y="162" width="393" height="573"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Yhp-VD-xh1">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Eo-Dw-AG7">
+                                <rect key="frame" x="9" y="70" width="24" height="24"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="nav_back_button"/>
+                                <connections>
+                                    <action selector="didTapBackButton" destination="ZeN-Li-eFk" eventType="touchUpInside" id="t0T-QD-m3g"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xuO-q1-oZ5"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="leading" secondItem="xuO-q1-oZ5" secondAttribute="leading" id="EdA-7X-z3T"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="trailing" secondItem="xuO-q1-oZ5" secondAttribute="trailing" id="VGH-Fj-Sn0"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="bottom" secondItem="xuO-q1-oZ5" secondAttribute="bottom" id="k2n-Fc-fuc"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="top" secondItem="xuO-q1-oZ5" secondAttribute="top" id="oYx-qQ-gaq"/>
+                            <constraint firstItem="0Eo-Dw-AG7" firstAttribute="top" secondItem="Yhp-VD-xh1" secondAttribute="top" constant="11" id="6ye-ot-WnF"/>
+                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="leading" secondItem="Bve-UP-ObT" secondAttribute="leading" id="EdA-7X-z3T"/>
+                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="trailing" secondItem="Bve-UP-ObT" secondAttribute="trailing" id="VGH-Fj-Sn0"/>
+                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="bottom" secondItem="Bve-UP-ObT" secondAttribute="bottom" constant="-34" id="k2n-Fc-fuc"/>
+                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="top" secondItem="Bve-UP-ObT" secondAttribute="top" constant="59" id="oYx-qQ-gaq"/>
+                            <constraint firstItem="0Eo-Dw-AG7" firstAttribute="leading" secondItem="Yhp-VD-xh1" secondAttribute="leading" constant="9" id="wT1-cr-WO4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rlI-X5-Wdo"/>
@@ -245,6 +255,7 @@
         <image name="Exit" width="44" height="44"/>
         <image name="Favorites Inactive" width="44" height="44"/>
         <image name="Photo" width="70" height="70"/>
+        <image name="nav_back_button" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Background">
