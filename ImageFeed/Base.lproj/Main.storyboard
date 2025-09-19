@@ -194,37 +194,69 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Yhp-VD-xh1">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
-                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zZU-Wd-bcl">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="bxe-gS-Akx">
+                                        <rect key="frame" x="0.0" y="0.0" width="1600" height="1059"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="0yb-9v-WBf"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Lb6-Bl-BRj"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZeN-Li-eFk" id="CMY-69-hYD"/>
+                                </connections>
+                            </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Eo-Dw-AG7">
-                                <rect key="frame" x="9" y="70" width="24" height="24"/>
+                                <rect key="frame" x="8" y="67" width="24" height="24"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="nav_back_button"/>
                                 <connections>
                                     <action selector="didTapBackButton" destination="ZeN-Li-eFk" eventType="touchUpInside" id="t0T-QD-m3g"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qvc-3l-xjA">
+                                <rect key="frame" x="171.66666666666666" y="752" width="50" height="50"/>
+                                <color key="backgroundColor" name="YP Black"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="dnG-IA-NPf"/>
+                                    <constraint firstAttribute="height" constant="50" id="krc-dz-YkI"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="share_button"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="25"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="ZeN-Li-eFk" eventType="touchUpInside" id="fqO-DP-H4b"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xuO-q1-oZ5"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="0Eo-Dw-AG7" firstAttribute="top" secondItem="Yhp-VD-xh1" secondAttribute="top" constant="11" id="6ye-ot-WnF"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="leading" secondItem="Bve-UP-ObT" secondAttribute="leading" id="EdA-7X-z3T"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="trailing" secondItem="Bve-UP-ObT" secondAttribute="trailing" id="VGH-Fj-Sn0"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="bottom" secondItem="Bve-UP-ObT" secondAttribute="bottom" constant="-34" id="k2n-Fc-fuc"/>
-                            <constraint firstItem="Yhp-VD-xh1" firstAttribute="top" secondItem="Bve-UP-ObT" secondAttribute="top" constant="59" id="oYx-qQ-gaq"/>
-                            <constraint firstItem="0Eo-Dw-AG7" firstAttribute="leading" secondItem="Yhp-VD-xh1" secondAttribute="leading" constant="9" id="wT1-cr-WO4"/>
+                            <constraint firstItem="0Eo-Dw-AG7" firstAttribute="leading" secondItem="xuO-q1-oZ5" secondAttribute="leading" constant="8" id="2Bf-jV-DNP"/>
+                            <constraint firstItem="xuO-q1-oZ5" firstAttribute="trailing" secondItem="zZU-Wd-bcl" secondAttribute="trailing" id="C0Y-w0-8TR"/>
+                            <constraint firstItem="Qvc-3l-xjA" firstAttribute="centerX" secondItem="Bve-UP-ObT" secondAttribute="centerX" id="GZe-ti-dCg"/>
+                            <constraint firstItem="zZU-Wd-bcl" firstAttribute="leading" secondItem="xuO-q1-oZ5" secondAttribute="leading" id="KE5-K5-Pip"/>
+                            <constraint firstAttribute="bottom" secondItem="zZU-Wd-bcl" secondAttribute="bottom" id="POm-ES-scs"/>
+                            <constraint firstItem="xuO-q1-oZ5" firstAttribute="bottom" secondItem="Qvc-3l-xjA" secondAttribute="bottom" constant="16" id="bcO-N8-wr5"/>
+                            <constraint firstItem="0Eo-Dw-AG7" firstAttribute="top" secondItem="xuO-q1-oZ5" secondAttribute="top" constant="8" id="jFh-Fh-Jke"/>
+                            <constraint firstItem="zZU-Wd-bcl" firstAttribute="top" secondItem="Bve-UP-ObT" secondAttribute="top" id="jkF-N4-q3Z"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rlI-X5-Wdo"/>
                     <connections>
-                        <outlet property="imageView" destination="Yhp-VD-xh1" id="c72-H0-h4e"/>
+                        <outlet property="imageView" destination="bxe-gS-Akx" id="yVD-hP-Q69"/>
+                        <outlet property="scrollView" destination="zZU-Wd-bcl" id="6vX-zZ-V9O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ulS-Xl-bcY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1842" y="-418"/>
+            <point key="canvasLocation" x="1841.9847328244275" y="-418.3098591549296"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2gV-A8-4xs">
@@ -256,6 +288,7 @@
         <image name="Favorites Inactive" width="44" height="44"/>
         <image name="Photo" width="70" height="70"/>
         <image name="nav_back_button" width="24" height="24"/>
+        <image name="share_button" width="30" height="30"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Background">
