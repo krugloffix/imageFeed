@@ -1,30 +1,78 @@
 import UIKit
 
-class ProfileViewController: UIViewController {
+// MARK: - ProfileViewController
+
+final class ProfileViewController: UIViewController {
+    // MARK: - Constants
+
+    private enum Constants {
+        static let infoStackSpacing: CGFloat = 8
+        static let headerStackTopInset: CGFloat = 32
+        static let headerStackLeftInset: CGFloat = 16
+        static let headerStackRightInset: CGFloat = -24
+        static let infoStackTopInset: CGFloat = 8
+        static let infoStackLeftInset: CGFloat = 16
+        static let infoStackRightInset: CGFloat = -16
+        static let exitButtonWidth: CGFloat = 44
+        static let exitButtonHeight: CGFloat = 44
+        static let imageViewWidth: CGFloat = 70
+        static let imageViewHeight: CGFloat = 70
+    }
+
+    // MARK: - Private UI Properties
+
+    private let headerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let infoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = Constants.infoStackSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .ypGray
+        return imageView
+    }()
+
+    private let profileName = UILabel()
+    private let profileEmail = UILabel()
+    private let profileDescription = UILabel()
+
+    private let exitButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    // MARK: - Private Properties
+
+    private let profileImage = UIImage(resource: .profileMockPhoto)
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
+        setupConstraints()
+    }
 
-        let headerStackView = UIStackView()
-        let profileImage = UIImage(resource: .profileMockPhoto)
-        let imageView = UIImageView(image: profileImage)
-        let exitButton = UIButton.systemButton(
-            with: .exit,
-            target: self,
-            action: #selector(Self.didTapButton)
-        )
+    // MARK: - Private Methods
 
-        let infoStackView = UIStackView()
-        let profileName = UILabel()
-        let profileEmail = UILabel()
-        let profileDescription = UILabel()
-
+    private func setupViews() {
         view.addSubview(headerStackView)
         view.addSubview(infoStackView)
 
-        headerStackView.axis = .horizontal
-        headerStackView.alignment = .center
-        headerStackView.distribution = .equalSpacing
         headerStackView.addArrangedSubview(imageView)
         headerStackView.addArrangedSubview(exitButton)
 
@@ -32,47 +80,63 @@ class ProfileViewController: UIViewController {
         infoStackView.addArrangedSubview(profileEmail)
         infoStackView.addArrangedSubview(profileDescription)
 
-        headerStackView.translatesAutoresizingMaskIntoConstraints = false
-        headerStackView.topAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.topAnchor,
-            constant: 32
-        ).isActive = true
-        headerStackView.leftAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leftAnchor,
-            constant: 16
-        ).isActive = true
-        headerStackView.rightAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.rightAnchor,
-            constant: -24
-        ).isActive = true
+        imageView.image = profileImage
 
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.tintColor = .ypGray
+        configureLabels()
+        configureExitButton()
+    }
 
-        exitButton.tintColor = .ypRed
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            headerStackView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Constants.headerStackTopInset
+            ),
+            headerStackView.leftAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                constant: Constants.headerStackLeftInset
+            ),
+            headerStackView.rightAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                constant: Constants.headerStackRightInset
+            ),
+        ])
 
-        infoStackView.axis = .vertical
-        infoStackView.spacing = 8
+        NSLayoutConstraint.activate([
+            infoStackView.topAnchor.constraint(
+                equalTo: headerStackView.bottomAnchor,
+                constant: Constants.infoStackTopInset
+            ),
+            infoStackView.leftAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                constant: Constants.infoStackLeftInset
+            ),
+            infoStackView.rightAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                constant: Constants.infoStackRightInset
+            ),
+        ])
 
-        infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        infoStackView.topAnchor.constraint(
-            equalTo: headerStackView.bottomAnchor,
-            constant: 8
-        ).isActive = true
-        infoStackView.leftAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.leftAnchor,
-            constant: 16
-        ).isActive = true
-        infoStackView.rightAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.rightAnchor,
-            constant: -16
-        ).isActive = true
+        NSLayoutConstraint.activate([
+            exitButton.widthAnchor.constraint(
+                equalToConstant: Constants.exitButtonWidth
+            ),
+            exitButton.heightAnchor.constraint(
+                equalToConstant: Constants.exitButtonHeight
+            ),
+        ])
 
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(
+                equalToConstant: Constants.imageViewWidth
+            ),
+            imageView.heightAnchor.constraint(
+                equalToConstant: Constants.imageViewHeight
+            ),
+        ])
+    }
+
+    private func configureLabels() {
         profileName.text = "Имя профиля"
         profileName.font = .systemFont(ofSize: 23, weight: .bold)
         profileName.textColor = .ypWhite
@@ -85,6 +149,18 @@ class ProfileViewController: UIViewController {
         profileDescription.font = .systemFont(ofSize: 13)
         profileDescription.textColor = .ypWhite
     }
+
+    private func configureExitButton() {
+        exitButton.setImage(.exit, for: .normal)
+        exitButton.addTarget(
+            self,
+            action: #selector(Self.didTapButton),
+            for: .touchUpInside
+        )
+        exitButton.tintColor = .ypRed
+    }
+
+    // MARK: - Actions
 
     @objc
     private func didTapButton() {}
