@@ -6,7 +6,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         let headerStackView = UIStackView()
-        let profileImage = UIImage(systemName: "person.crop.circle.fill")
+        let profileImage = UIImage(resource: .profileMockPhoto)
         let imageView = UIImageView(image: profileImage)
         let exitButton = UIButton.systemButton(
             with: .exit,
