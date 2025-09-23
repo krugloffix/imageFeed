@@ -53,8 +53,8 @@ class ProfileViewController: UIViewController {
 
         exitButton.tintColor = .ypRed
         exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
 
         infoStackView.axis = .vertical
         infoStackView.spacing = 8
