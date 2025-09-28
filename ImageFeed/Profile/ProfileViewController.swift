@@ -1,3 +1,4 @@
+import Kingfisher
 import UIKit
 
 // MARK: - ProfileViewController
@@ -46,7 +47,7 @@ final class ProfileViewController: UIViewController {
     }()
 
     private let profileName = UILabel()
-    private let profileEmail = UILabel()
+    private let profileLoginName = UILabel()
     private let profileDescription = UILabel()
 
     private let exitButton: UIButton = {
@@ -57,7 +58,11 @@ final class ProfileViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    private let profileImage = UIImage(resource: .profileMockPhoto)
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private let profileImageServiceObserverName = ProfileImageService
+        .didChangeNotification
+    private var profileViewImageServiceObserver: NSObjectProtocol?
 
     // MARK: - Lifecycle
 
@@ -65,11 +70,29 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+
+        if let profile = profileService.profile {
+            updateProfileDetails(profile: profile)
+        }
+
+        profileViewImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: profileImageServiceObserverName,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        
+        updateAvatar()
     }
 
     // MARK: - Private Methods
 
     private func setupViews() {
+        view.backgroundColor = .ypBlack
+        
         view.addSubview(headerStackView)
         view.addSubview(infoStackView)
 
@@ -77,10 +100,10 @@ final class ProfileViewController: UIViewController {
         headerStackView.addArrangedSubview(exitButton)
 
         infoStackView.addArrangedSubview(profileName)
-        infoStackView.addArrangedSubview(profileEmail)
+        infoStackView.addArrangedSubview(profileLoginName)
         infoStackView.addArrangedSubview(profileDescription)
-
-        imageView.image = profileImage
+        
+        imageView.layer.cornerRadius = Constants.imageViewHeight / 2
 
         configureLabels()
         configureExitButton()
@@ -137,15 +160,12 @@ final class ProfileViewController: UIViewController {
     }
 
     private func configureLabels() {
-        profileName.text = "Имя профиля"
         profileName.font = .systemFont(ofSize: 23, weight: .bold)
         profileName.textColor = .ypWhite
 
-        profileEmail.text = "Email"
-        profileEmail.font = .systemFont(ofSize: 13)
-        profileEmail.textColor = .ypGray
+        profileLoginName.font = .systemFont(ofSize: 13)
+        profileLoginName.textColor = .ypGray
 
-        profileDescription.text = "Описание профиля"
         profileDescription.font = .systemFont(ofSize: 13)
         profileDescription.textColor = .ypWhite
     }
@@ -158,6 +178,23 @@ final class ProfileViewController: UIViewController {
             for: .touchUpInside
         )
         exitButton.tintColor = .ypRed
+    }
+
+    private func updateProfileDetails(profile: Profile) {
+        profileName.text = profile.name
+        profileDescription.text = profile.bio ?? ""
+        profileLoginName.text = profile.loginName
+    }
+
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL
+        else { return }
+        
+        let url = URL(string: profileImageURL)
+        let placeholder = UIImage(named: "profile_image_placeholder")
+        let processor = RoundCornerImageProcessor(cornerRadius: Constants.imageViewHeight / 2)
+        imageView.kf.setImage(with: url, placeholder: placeholder, options: [.processor(processor)])
     }
 
     // MARK: - Actions
