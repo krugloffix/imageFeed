@@ -12,9 +12,7 @@ final class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureBackButton()
-        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -23,9 +21,7 @@ final class AuthViewController: UIViewController {
                 let webViewViewController = segue.destination
                     as? WebViewViewController
             else {
-                assertionFailure(
-                    "Failed to prepare for \(showWebViewSegueIdentifier)"
-                )
+                print("Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
             webViewViewController.delegate = self

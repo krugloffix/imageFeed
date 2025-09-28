@@ -4,6 +4,8 @@ import WebKit
 enum WebViewConstants {
     static let unsplashAuthorizeURLString =
         "https://unsplash.com/oauth/authorize"
+    static let progressCompleteValue: Double = 1.0
+    static let progressEpsilon: Double = 0.0001
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -27,7 +29,7 @@ final class WebViewViewController: UIViewController {
         loadAuthView()
         updateProgress()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -70,7 +72,7 @@ final class WebViewViewController: UIViewController {
         }
 
         let request = URLRequest(url: url)
-        
+
         webView.load(request)
     }
 
@@ -98,7 +100,7 @@ final class WebViewViewController: UIViewController {
 
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+        progressView.isHidden = fabs(webView.estimatedProgress - WebViewConstants.progressCompleteValue) <= WebViewConstants.progressEpsilon
     }
 }
 
