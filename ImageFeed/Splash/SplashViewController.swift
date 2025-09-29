@@ -1,11 +1,5 @@
 import UIKit
 
-// MARK: - Identifiers
-
-let showAuthenticationScreenSegueIdentifier =
-    "showAuthenticationScreenSegueIdentifier"
-let showMainScreenSegueIdentifier = "showMainScreenSegueIdentifier"
-
 // MARK: - SplashViewController
 
 final class SplashViewController: UIViewController {
@@ -42,13 +36,10 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if storage.token != nil {
-            fetchProfile(token: storage.token ?? "")
+        if let token = storage.token {
+            fetchProfile(token: token)
         } else {
-            performSegue(
-                withIdentifier: showAuthenticationScreenSegueIdentifier,
-                sender: nil
-            )
+            presentAuthViewController()
         }
     }
 
@@ -56,15 +47,21 @@ final class SplashViewController: UIViewController {
 
     private func presentAuthViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
-            assertionFailure("Не удалось найти AuthViewController по идентификатору")
+        guard
+            let authViewController = storyboard.instantiateViewController(
+                withIdentifier: "AuthViewController"
+            ) as? AuthViewController
+        else {
+            assertionFailure(
+                "Не удалось найти AuthViewController по идентификатору"
+            )
             return
         }
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true)
     }
-    
+
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
             print("Invalid window configuration")
@@ -111,20 +108,23 @@ extension SplashViewController: AuthViewControllerDelegate {
 
     private func fetchProfile(token: String) {
         UIBlockingProgressHUD.show()
-
+        
+        print("Fetching profile... \(token)")
+        
         profileService.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
 
             guard let self = self else { return }
+            
             switch result {
             case .success(let profile):
+                print("Profile fetched: \(profile)")
                 profileImageService.fetchProfileImage(
-                    token: token,
                     username: profile.username
                 ) { _ in }
                 self.switchToTabBarController()
             case .failure(let error):
-                print("Error fetching token: \(error)")
+                print("Error fetching profile: \(error)")
                 break
             }
         }

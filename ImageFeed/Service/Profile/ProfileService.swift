@@ -55,13 +55,11 @@ final class ProfileService {
                 )
                 self?.profile = profile
                 completion(.success(profile))
-
             case .failure(let error):
                 completion(.failure(error))
             }
             self?.task = nil
         }
-
         self.task = task
         task.resume()
     }

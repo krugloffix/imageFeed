@@ -84,15 +84,22 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-        
+
         updateAvatar()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let observer = profileViewImageServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 
     // MARK: - Private Methods
 
     private func setupViews() {
         view.backgroundColor = .ypBlack
-        
+
         view.addSubview(headerStackView)
         view.addSubview(infoStackView)
 
@@ -102,8 +109,9 @@ final class ProfileViewController: UIViewController {
         infoStackView.addArrangedSubview(profileName)
         infoStackView.addArrangedSubview(profileLoginName)
         infoStackView.addArrangedSubview(profileDescription)
-        
+
         imageView.layer.cornerRadius = Constants.imageViewHeight / 2
+        imageView.layer.masksToBounds = true
 
         configureLabels()
         configureExitButton()
@@ -190,11 +198,18 @@ final class ProfileViewController: UIViewController {
         guard
             let profileImageURL = profileImageService.avatarURL
         else { return }
-        
+
         let url = URL(string: profileImageURL)
         let placeholder = UIImage(named: "profile_image_placeholder")
-        let processor = RoundCornerImageProcessor(cornerRadius: Constants.imageViewHeight / 2)
-        imageView.kf.setImage(with: url, placeholder: placeholder, options: [.processor(processor)])
+        let processor = RoundCornerImageProcessor(
+            cornerRadius: Constants.imageViewHeight / 2
+        )
+                
+        imageView.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [.processor(processor)]
+        )
     }
 
     // MARK: - Actions

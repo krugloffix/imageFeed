@@ -71,17 +71,13 @@ final class OAuth2Service {
                     let authToken = body.accessToken
                     self.token = authToken
                     completion(.success(authToken))
-
-                    self.task = nil
-                    self.lastCode = nil
-
                 case .failure(let error):
                     print("[fetchOAuthToken]: Request Error: \(error.localizedDescription)")
                     completion(.failure(error))
-
-                    self.task = nil
-                    self.lastCode = nil
                 }
+                
+                self.task = nil
+                self.lastCode = nil
             }
         }
         self.task = task

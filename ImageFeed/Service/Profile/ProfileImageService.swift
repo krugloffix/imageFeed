@@ -25,18 +25,22 @@ final class ProfileImageService {
 
     // MARK: - Private Properties
 
-    private let urlSesion = URLSession.shared
+    private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private(set) var avatarURL: String?
 
     // MARK: - Public Methods
     func fetchProfileImage(
-        token: String,
         username: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         task?.cancel()
 
+        guard let token = OAuth2TokenStorage.shared.token else {
+            completion(.failure(NSError(domain: "ProfileImageService", code: 401, userInfo: [NSLocalizedDescriptionKey: "Authorization token missing"])))
+            return
+        }
+        
         guard
             let request = makeProfileImageRequest(
                 token: token,
@@ -47,7 +51,7 @@ final class ProfileImageService {
             return
         }
 
-        let task = urlSesion.objectTask(for: request) {
+        let task = urlSession.objectTask(for: request) {
             [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let result):
@@ -56,13 +60,14 @@ final class ProfileImageService {
                 let profileImageUrl = result.profileImage.small
                 self.avatarURL = profileImageUrl
                 completion(.success(profileImageUrl))
+                                
                 NotificationCenter.default.post(
                     name: ProfileImageService.didChangeNotification,
                     object: self,
                     userInfo: ["URL": profileImageUrl]
                 )
-
             case .failure(let error):
+                print("Failed to fetch profile image: \(error)")
                 completion(.failure(error))
             }
             self?.task = nil
