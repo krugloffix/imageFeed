@@ -5,7 +5,7 @@ import Foundation
 struct ProfileResult: Codable {
     let username: String
     let firstName: String
-    let lastName: String
+    let lastName: String?
     let bio: String?
 }
 
@@ -38,7 +38,9 @@ final class ProfileService {
 
         guard let request = makeProfileRequest(token: token)
         else {
-            completion(.failure(URLError(.badURL)))
+            let error = URLError(.badURL)
+            print("Failed to create request: \(error.localizedDescription)")
+            completion(.failure(error))
             return
         }
 
@@ -48,7 +50,7 @@ final class ProfileService {
             case .success(let result):
                 let profile = Profile(
                     username: result.username,
-                    name: "\(result.firstName) \(result.lastName)"
+                    name: "\(result.firstName) \(result.lastName ?? "")"
                         .trimmingCharacters(in: .whitespaces),
                     loginName: "@\(result.username)",
                     bio: result.bio
@@ -56,6 +58,7 @@ final class ProfileService {
                 self?.profile = profile
                 completion(.success(profile))
             case .failure(let error):
+                print("Failed to fetch profile: \(error.localizedDescription)")
                 completion(.failure(error))
             }
             self?.task = nil
@@ -67,7 +70,8 @@ final class ProfileService {
     // MARK: - Private Methods
 
     private func makeProfileRequest(token: String) -> URLRequest? {
-        let url = Constants.defaultBaseURL.appendingPathComponent("me")
+        guard let baseURL = Constants.defaultBaseURL else { return nil }
+        let url = baseURL.appendingPathComponent("me")
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
